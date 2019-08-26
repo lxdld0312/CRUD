@@ -17,7 +17,7 @@
 
     <!-- 配置数据源 -->
     <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
-        <property name="driverClass" value="${jdbc.jdbcUrl}"></property>
+        <property name="driverClass" value="${jdbc.driverClass}"></property>
         <property name="jdbcUrl" value="${jdbc.jdbcUrl}"></property>
         <property name="user" value="${jdbc.user}"></property>
         <property name="password" value="${jdbc.password}"></property>
@@ -37,6 +37,13 @@
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <!-- 扫描所有的dao接口的实现，加入到ioc容器中 -->
         <property name="basePackage" value="com.lxd.crud.dao"></property>
+    </bean>
+
+    <!-- 配置一个可以执行批量的sqlSession -->
+    <bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+        <constructor-arg name="sqlSessionFactory" ref="sessionFactory"></constructor-arg>
+        <!-- 批量 -->
+        <constructor-arg name="executorType" value="BATCH"></constructor-arg>
     </bean>
 
     <!-- 事务管理器 -->
